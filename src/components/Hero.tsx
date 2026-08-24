@@ -153,9 +153,10 @@ export default function Hero({ theme }: HeroProps) {
           distance={24}
           elevation={narrow ? -6 : -4.5}
           fov={narrow ? 54 : 40}
-          glow={isLight ? 1.4 : (narrow ? 1.0 : 1.3)}
-          steps={narrow ? 200 : 300}
-          resolution={narrow ? 0.65 : 0.75}
+          glow={isLight ? 1.4 : (narrow ? 0.9 : 1.3)}
+          steps={narrow ? 110 : 280}
+          resolution={narrow ? 0.5 : 0.72}
+          maxDpr={narrow ? 1.15 : 1.5}
           hotColor={hotColor}
           midColor={midColor}
           coolColor={coolColor}

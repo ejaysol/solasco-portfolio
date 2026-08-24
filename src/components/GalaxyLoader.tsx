@@ -4,8 +4,10 @@ import { useGLTF, useProgress, OrbitControls } from '@react-three/drei';
 import gsap from 'gsap';
 import * as THREE from 'three';
 
-// Helper function to generate a soft, glowing radial gradient dot texture
-const createGlowTexture = () => {
+// Singleton cached texture to prevent creating multiple canvas textures
+let cachedGlowTexture: THREE.CanvasTexture | null = null;
+const getGlowTexture = () => {
+  if (cachedGlowTexture) return cachedGlowTexture;
   const canvas = document.createElement('canvas');
   canvas.width = 16;
   canvas.height = 16;
@@ -19,7 +21,8 @@ const createGlowTexture = () => {
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 16, 16);
   }
-  return new THREE.CanvasTexture(canvas);
+  cachedGlowTexture = new THREE.CanvasTexture(canvas);
+  return cachedGlowTexture;
 };
 
 // Subcomponent: Centered, steady and color-gradient galaxy points model
@@ -113,7 +116,7 @@ function GalaxyModel({ isEntering }: { isEntering: boolean }) {
           mat.depthWrite = false;
           mat.blending = THREE.AdditiveBlending;
           mat.vertexColors = true;
-          mat.map = createGlowTexture();
+          mat.map = getGlowTexture();
           
           if ('color' in mat) {
             (mat as any).color.setHex(0xffffff);
@@ -163,7 +166,7 @@ function GalaxyModel({ isEntering }: { isEntering: boolean }) {
 // Subcomponent: Soft glowing transition sprite during warp
 function TransitionSprite({ isEntering }: { isEntering: boolean }) {
   const spriteRef = useRef<THREE.Sprite>(null);
-  const glowTex = useMemo(() => createGlowTexture(), []);
+  const glowTex = useMemo(() => getGlowTexture(), []);
 
   useEffect(() => {
     if (isEntering && spriteRef.current) {
@@ -280,7 +283,11 @@ export default function GalaxyLoader({ onFinish }: GalaxyLoaderProps) {
     >
       {/* 3D Galaxy Canvas with Steady OrbitControls */}
       <div className="absolute inset-0 w-full h-full">
-        <Canvas camera={{ position: [0, 0, 15], fov: 45 }}>
+        <Canvas
+          camera={{ position: [0, 0, 15], fov: 45 }}
+          dpr={[1, 1.5]}
+          gl={{ powerPreference: 'high-performance', antialias: false }}
+        >
           <Suspense fallback={null}>
             <GalaxyModel isEntering={isEntering} />
           </Suspense>
@@ -303,8 +310,15 @@ export default function GalaxyLoader({ onFinish }: GalaxyLoaderProps) {
         <div className="flex flex-col items-center w-full max-w-sm px-6 text-center space-y-8">
           
           <div className="flex flex-col space-y-2">
+            <h1 className="text-xs tracking-[0.4em] text-white/70 font-display font-medium uppercase">
+              Ephraim Jay Solasco
+            </h1>
             <p className="text-[11px] tracking-[0.35em] text-[#00f0ff] font-semibold uppercase animate-pulse drop-shadow-[0_0_8px_rgba(0,240,255,0.5)]">
-              {isEntering ? "Entering Portfolio Cores..." : "Loading Virtual Workspace..."}
+              {isEntering
+                ? "Entering Portfolio..."
+                : showEnterBtn
+                ? "Ready to Explore"
+                : "Loading Portfolio Experience..."}
             </p>
           </div>
 
@@ -319,7 +333,7 @@ export default function GalaxyLoader({ onFinish }: GalaxyLoaderProps) {
               </div>
               
               <div className="flex w-full justify-between items-center px-1 text-[9px] text-slate-500 font-mono tracking-widest uppercase">
-                <span>COORD_GRID_MAPPED</span>
+                <span>PORTFOLIO_ASSETS</span>
                 <span className="text-[#00f0ff] font-bold">{Math.round(progress)}%</span>
               </div>
             </div>
@@ -334,7 +348,7 @@ export default function GalaxyLoader({ onFinish }: GalaxyLoaderProps) {
                 isEntering ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100 animate-pulse'
               }`}
             >
-              <span>Initialize System</span>
+              <span>Explore Portfolio</span>
             </button>
           )}
 

@@ -21,8 +21,8 @@ export default function CustomCursor() {
   const emitterRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
-    // Check if device is touch-based
-    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+    // Check if device is touch-based or on mobile screen
+    const isTouch = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 1024;
     if (isTouch) return;
 
     // Enable custom cursor styles

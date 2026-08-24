@@ -273,7 +273,8 @@ export default function PlanetOrbitSystem() {
         <div className="absolute inset-0 w-full h-full flex items-center justify-center">
           <Canvas
             camera={{ position: [0, 1, 18], fov: 45 }}
-            gl={{ antialias: true, alpha: true }}
+            dpr={[1, 1.5]}
+            gl={{ powerPreference: 'high-performance', antialias: true, alpha: true }}
           >
             <Suspense fallback={null}>
               <OrbitScene

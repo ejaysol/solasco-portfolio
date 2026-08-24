@@ -6,8 +6,10 @@ interface BackgroundParticlesProps {
   theme?: 'dark' | 'light';
 }
 
-// Helper function to generate a soft, glowing radial gradient dot texture
-const createGlowTexture = () => {
+// Singleton cached texture
+let cachedParticleTexture: THREE.CanvasTexture | null = null;
+const getParticleGlowTexture = () => {
+  if (cachedParticleTexture) return cachedParticleTexture;
   const canvas = document.createElement('canvas');
   canvas.width = 16;
   canvas.height = 16;
@@ -21,12 +23,20 @@ const createGlowTexture = () => {
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 16, 16);
   }
-  return new THREE.CanvasTexture(canvas);
+  cachedParticleTexture = new THREE.CanvasTexture(canvas);
+  return cachedParticleTexture;
 };
 
 export default function BackgroundParticles({ theme = 'dark' }: BackgroundParticlesProps) {
   const pointsRef = useRef<THREE.Points>(null);
-  const count = 1500; // Increased count for a richer space environment
+  
+  // Adapt particle density for mobile screens
+  const count = useMemo(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      return 600;
+    }
+    return 1300;
+  }, []);
 
   const positions = useMemo(() => {
     const pos = new Float32Array(count * 3);
@@ -36,9 +46,9 @@ export default function BackgroundParticles({ theme = 'dark' }: BackgroundPartic
       pos[i + 2] = (Math.random() - 0.5) * 45; // Z
     }
     return pos;
-  }, []);
+  }, [count]);
 
-  const glowTex = useMemo(() => createGlowTexture(), []);
+  const glowTex = useMemo(() => getParticleGlowTexture(), []);
 
   useFrame((state) => {
     if (pointsRef.current) {

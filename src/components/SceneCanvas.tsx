@@ -53,8 +53,9 @@ export default function SceneCanvas({ type, scrollProgress = 0, theme = 'dark' }
   return (
     <Canvas
       camera={{ position: [0, 0, 4.5], fov: 45 }}
+      dpr={[1, 1.5]}
       style={{ pointerEvents: type === 'hero' ? 'auto' : 'none' }}
-      gl={{ antialias: true, alpha: true }}
+      gl={{ powerPreference: 'high-performance', antialias: type === 'hero', alpha: true }}
     >
       <ambientLight intensity={isLight ? 1.6 : 1.2} />
       
