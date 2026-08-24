@@ -1,0 +1,273 @@
+@import "tailwindcss";
+
+:root {
+  --bg-color: #0a0a0f;
+  --text-primary: #cbd5e1;
+  /* slate-300 */
+  --text-secondary: #94a3b8;
+  /* slate-400 */
+  --text-heading: #ffffff;
+  --card-bg: rgba(18, 18, 30, 0.5);
+  --card-border: rgba(255, 255, 255, 0.06);
+  --nav-bg: rgba(10, 10, 15, 0.7);
+  --nav-border: rgba(255, 255, 255, 0.05);
+  --accent-cyan: #00f0ff;
+  --accent-purple: #bd00ff;
+}
+
+:root.light {
+  --bg-color: #f8fafc;
+  /* slate-50 */
+  --text-primary: #334155;
+  /* slate-700 */
+  --text-secondary: #64748b;
+  /* slate-500 */
+  --text-heading: #0f172a;
+  /* slate-900 */
+  --card-bg: rgba(255, 255, 255, 0.75);
+  --card-border: rgba(15, 23, 42, 0.08);
+  --nav-bg: rgba(248, 250, 252, 0.8);
+  --nav-border: rgba(15, 23, 42, 0.06);
+  --accent-cyan: #0088cc;
+  --accent-purple: #8800cc;
+}
+
+@theme {
+  --color-brand-dark: var(--bg-color);
+  --color-brand-card: var(--card-bg);
+  --color-brand-cyan: var(--accent-cyan);
+  --color-brand-purple: var(--accent-purple);
+  --font-sans: 'Space Grotesk', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Outfit', sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-sans);
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg-color);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--card-border);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-purple);
+  }
+}
+
+/* Custom Utilities */
+.glass {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-nav {
+  background: var(--nav-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--nav-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.neon-border-cyan {
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+}
+
+.neon-border-purple {
+  box-shadow: 0 0 15px rgba(189, 0, 255, 0.1);
+  border: 1px solid rgba(189, 0, 255, 0.25);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.glow-bg {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Cursor custom styling */
+.custom-cursor {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--accent-cyan);
+  border-radius: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transition: border-color 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+  animation: cursorPulse 2s infinite ease-in-out;
+}
+
+.custom-cursor-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--accent-purple);
+  border-radius: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 0 6px rgba(189, 0, 255, 0.4);
+}
+
+@keyframes cursorPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 18px rgba(0, 240, 255, 0.5);
+  }
+}
+
+@keyframes textShimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-text-shimmer {
+  background-size: 200% auto;
+  animation: textShimmer 4s ease infinite;
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 5s ease-in-out infinite;
+}
+
+/* Hide standard cursor on large screen devices if cursor active */
+@media (min-width: 1024px) {
+
+  .custom-cursor-active,
+  .custom-cursor-active * {
+    cursor: none !important;
+  }
+}
+
+/* On mobile/tablet, hide the custom cursor completely since touch doesn't have a hover cursor */
+@media (max-width: 1023px) {
+
+  .custom-cursor,
+  .custom-cursor-dot {
+    display: none !important;
+  }
+}
+
+/* Light mode specific element overrides for standard tailwind utility classes */
+.light .text-white,
+.light h1,
+.light h2,
+.light h3,
+.light .font-display.text-white {
+  color: var(--text-heading) !important;
+}
+
+.light .text-slate-100 {
+  color: var(--text-heading) !important;
+}
+
+.light .text-slate-200 {
+  color: var(--text-primary) !important;
+}
+
+.light .text-slate-300 {
+  color: var(--text-primary) !important;
+}
+
+.light .text-slate-400 {
+  color: var(--text-secondary) !important;
+}
+
+.light .text-slate-500 {
+  color: var(--text-secondary) !important;
+}
+
+/* Translucent bg/border overrides inside light container */
+.light .bg-white\/5 {
+  background-color: rgba(15, 23, 42, 0.04) !important;
+}
+
+.light .bg-white\/10 {
+  background-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+.light .border-white\/5 {
+  border-color: rgba(15, 23, 42, 0.06) !important;
+}
+
+.light .border-white\/10 {
+  border-color: rgba(15, 23, 42, 0.1) !important;
+}
+
+.light .glow-bg {
+  opacity: 0.06;
+}
+
+.light .custom-cursor {
+  border-color: var(--accent-purple);
+}
+
+.light .custom-cursor-dot {
+  background-color: var(--accent-cyan);
+}

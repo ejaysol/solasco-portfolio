@@ -1,0 +1,5 @@
+# robots.txt for search engine crawlers
+User-agent: *
+Allow: /
+
+Sitemap: https://ejaysol.vercel.app/sitemap.xml
