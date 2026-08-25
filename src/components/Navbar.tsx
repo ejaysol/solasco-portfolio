@@ -129,7 +129,7 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
 
       {/* Mobile Menu Dropdown with Smooth Animation */}
       <div
-        className={`md:hidden absolute top-full left-0 w-full glass-nav border-t border-black/5 dark:border-white/5 py-6 px-8 flex flex-col space-y-4 shadow-xl transition-all duration-300 ease-in-out origin-top ${
+        className={`md:hidden absolute top-full left-0 w-full bg-slate-50/98 dark:bg-[#0a0a0f]/98 backdrop-blur-xl border-b border-black/10 dark:border-white/5 py-6 px-8 flex flex-col space-y-4 shadow-xl transition-all duration-300 ease-in-out origin-top ${
           isMobileMenuOpen
             ? 'opacity-100 scale-y-100 translate-y-0 pointer-events-auto'
             : 'opacity-0 scale-y-95 -translate-y-2 pointer-events-none'
