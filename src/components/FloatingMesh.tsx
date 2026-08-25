@@ -13,14 +13,11 @@ function Model() {
   const groupRef = useRef<THREE.Group>(null);
 
   useEffect(() => {
-    // Ensure all meshes receive and cast shadows, and use double-sided rendering
+    // Ensure all meshes receive and cast shadows, and use optimized rendering
     scene.traverse((child) => {
       if (child instanceof THREE.Mesh) {
         child.castShadow = true;
         child.receiveShadow = true;
-        if (child.material) {
-          child.material.side = THREE.DoubleSide;
-        }
       }
     });
   }, [scene]);
