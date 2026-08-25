@@ -292,8 +292,8 @@ export default function Hero({ theme, introFinished = false }: HeroProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`p-2.5 rounded-full border transition-all duration-200 hover:scale-110 ${isLight
-                    ? 'bg-slate-900/5 border-slate-900/10 text-slate-700 hover:text-slate-950 hover:border-[#0088cc]/50'
-                    : 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:border-[#00f0ff]/50'
+                    ? 'bg-slate-900/10 border-slate-900/20 text-slate-700 hover:text-slate-950 hover:border-[#0088cc]/50'
+                    : 'bg-white/10 border-white/20 text-slate-200 hover:text-white hover:border-[#bd00ff]/50'
                   }`}
                 aria-label="GitHub - ejaysol (Ephraim Jay A. Solasco)"
               >
@@ -306,8 +306,8 @@ export default function Hero({ theme, introFinished = false }: HeroProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`p-2.5 rounded-full border transition-all duration-200 hover:scale-110 ${isLight
-                    ? 'bg-slate-900/5 border-slate-900/10 text-slate-700 hover:text-[#0088cc] hover:border-[#0088cc]/50'
-                    : 'bg-white/5 border-white/10 text-slate-400 hover:text-[#00f0ff] hover:border-[#00f0ff]/50'
+                    ? 'bg-slate-900/10 border-slate-900/20 text-slate-700 hover:text-[#0088cc] hover:border-[#0088cc]/50'
+                    : 'bg-white/10 border-white/20 text-slate-200 hover:text-[#00f0ff] hover:border-[#00f0ff]/50'
                   }`}
                 aria-label="LinkedIn - Ephraim Jay Solasco"
               >
