@@ -5,6 +5,7 @@ import { BlackHoleHeroSection } from '@/components/ui/blackhole-hero-section';
 
 interface HeroProps {
   theme: 'dark' | 'light';
+  introFinished?: boolean;
 }
 
 function useNarrow(query = '(max-width: 767px)') {
@@ -25,7 +26,7 @@ const ROLES = [
   'Creative Technologist',
 ];
 
-export default function Hero({ theme }: HeroProps) {
+export default function Hero({ theme, introFinished = false }: HeroProps) {
   const narrow = useNarrow();
   const isLight = theme === 'light';
   const bgContainerRef = useRef<HTMLDivElement | null>(null);
@@ -160,6 +161,7 @@ export default function Hero({ theme }: HeroProps) {
           hotColor={hotColor}
           midColor={midColor}
           coolColor={coolColor}
+          paused={!introFinished}
           className="w-full h-full"
         />
       </div>

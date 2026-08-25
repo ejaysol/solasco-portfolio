@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import BackgroundParticles from './BackgroundParticles';
@@ -8,6 +8,7 @@ interface SceneCanvasProps {
   type: 'hero' | 'bg';
   scrollProgress?: number;
   theme?: 'dark' | 'light';
+  introFinished?: boolean;
 }
 
 // Subcomponent to dynamically position the camera and controls based on screen size
@@ -47,31 +48,66 @@ function SceneSetup({ theme }: { theme: 'dark' | 'light' }) {
   );
 }
 
-export default function SceneCanvas({ type, scrollProgress = 0, theme = 'dark' }: SceneCanvasProps) {
+export default function SceneCanvas({
+  type,
+  scrollProgress = 0,
+  theme = 'dark',
+  introFinished = false,
+}: SceneCanvasProps) {
   const isLight = theme === 'light';
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    // Only set up observer if intro is finished
+    if (!introFinished) {
+      setIsInView(false);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.01 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [introFinished]);
 
   return (
-    <Canvas
-      camera={{ position: [0, 0, 4.5], fov: 45 }}
-      dpr={[1, 1.5]}
-      style={{ pointerEvents: type === 'hero' ? 'auto' : 'none' }}
-      gl={{ powerPreference: 'high-performance', antialias: type === 'hero', alpha: true }}
-    >
-      <ambientLight intensity={isLight ? 1.6 : 1.2} />
-      
-      {type === 'hero' && (
-        <>
-          <SceneSetup theme={theme} />
-          <FloatingMesh scrollProgress={scrollProgress} theme={theme} />
-        </>
-      )}
+    <div ref={containerRef} className="w-full h-full relative">
+      {introFinished && (
+        <Canvas
+          camera={{ position: [0, 0, 4.5], fov: 45 }}
+          dpr={[1, 1.5]}
+          style={{ pointerEvents: type === 'hero' ? 'auto' : 'none' }}
+          gl={{ powerPreference: 'high-performance', antialias: type === 'hero', alpha: true }}
+          frameloop={isInView ? 'always' : 'never'}
+        >
+          <ambientLight intensity={isLight ? 1.6 : 1.2} />
+          
+          {type === 'hero' && (
+            <>
+              <SceneSetup theme={theme} />
+              <FloatingMesh scrollProgress={scrollProgress} theme={theme} />
+            </>
+          )}
 
-      {type === 'bg' && (
-        <>
-          <pointLight position={[0, 0, 10]} intensity={isLight ? 0.8 : 0.6} color={isLight ? "#0088cc" : "#00f0ff"} />
-          <BackgroundParticles theme={theme} />
-        </>
+          {type === 'bg' && (
+            <>
+              <pointLight position={[0, 0, 10]} intensity={isLight ? 0.8 : 0.6} color={isLight ? "#0088cc" : "#00f0ff"} />
+              <BackgroundParticles theme={theme} />
+            </>
+          )}
+        </Canvas>
       )}
-    </Canvas>
+    </div>
   );
 }

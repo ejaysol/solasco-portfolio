@@ -4,9 +4,10 @@ import PlanetOrbitSystem from './PlanetOrbitSystem';
 
 interface AboutProps {
   theme?: 'dark' | 'light';
+  introFinished?: boolean;
 }
 
-export default function About({ theme = 'dark' }: AboutProps) {
+export default function About({ theme = 'dark', introFinished = false }: AboutProps) {
   const skillCategories = [
     {
       title: 'Frontend 3D & Motion',
@@ -52,7 +53,7 @@ export default function About({ theme = 'dark' }: AboutProps) {
           {/* Left Column: 3D Computer Model Visualizer (clean & transparent) */}
           <div className="lg:col-span-5 flex items-center justify-center relative">
             <div className="relative w-full h-[380px] md:h-[450px] flex items-center justify-center pointer-events-auto">
-              <SceneCanvas type="hero" theme={theme} />
+              <SceneCanvas type="hero" theme={theme} introFinished={introFinished} />
             </div>
           </div>
 
@@ -112,7 +113,7 @@ export default function About({ theme = 'dark' }: AboutProps) {
             </h3>
           </div>
 
-          <PlanetOrbitSystem />
+          <PlanetOrbitSystem introFinished={introFinished} />
         </div>
       </div>
     </section>

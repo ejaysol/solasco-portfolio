@@ -9,7 +9,7 @@ interface FloatingMeshProps {
 }
 
 function Model() {
-  const { scene } = useGLTF('/textures/scene.gltf');
+  const { scene } = useGLTF('/textures/scene.glb', '/draco/');
   const groupRef = useRef<THREE.Group>(null);
 
   useEffect(() => {
@@ -56,4 +56,4 @@ export default function FloatingMesh({}: FloatingMeshProps) {
 }
 
 // Preload model assets
-useGLTF.preload('/textures/scene.gltf');
+useGLTF.preload('/textures/scene.glb', '/draco/');

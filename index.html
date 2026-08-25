@@ -34,6 +34,11 @@
     <link rel="icon" type="image/png" href="/logo-white.png" />
     <link rel="apple-touch-icon" href="/logo-white.png" />
 
+    <!-- Prefetch local Draco decoder assets for faster 3D model parsing -->
+    <link rel="prefetch" crossorigin="anonymous" href="/draco/draco_wasm_wrapper.js" />
+    <link rel="prefetch" crossorigin="anonymous" href="/draco/draco_decoder.wasm" />
+    <link rel="prefetch" crossorigin="anonymous" href="/draco/draco_decoder.js" />
+
     <!-- Structured Data (JSON-LD Schema for Google Search) -->
     <script type="application/ld+json">
       {

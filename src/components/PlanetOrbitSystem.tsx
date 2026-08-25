@@ -41,7 +41,7 @@ const ORBIT_CONFIGS = [
 
 // Subcomponent: Central Rotating 3D Planet (writes to depth buffer to occlude balls behind it)
 function CentralPlanet() {
-  const { scene } = useGLTF('/planet/scene.gltf');
+  const { scene } = useGLTF('/planet/scene.glb', '/draco/');
   const planetRef = useRef<THREE.Group>(null);
 
   useEffect(() => {
@@ -252,11 +252,35 @@ function OrbitScene({
   );
 }
 
-export default function PlanetOrbitSystem() {
+export default function PlanetOrbitSystem({ introFinished = false }: { introFinished?: boolean }) {
   const [hoveredTech, setHoveredTech] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    if (!introFinished) {
+      setIsInView(false);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.01 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [introFinished]);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center my-4">
+    <div ref={containerRef} className="w-full flex flex-col items-center justify-center my-4">
       {/* 3D Canvas Solar System Container (Centered, transparent) */}
       <div className="relative w-full max-w-5xl h-[540px] sm:h-[620px] md:h-[700px] mx-auto flex items-center justify-center pointer-events-auto">
         {/* Orbit Drag Instruction Overlay */}
@@ -271,18 +295,21 @@ export default function PlanetOrbitSystem() {
 
         {/* 3D WebGL Canvas */}
         <div className="absolute inset-0 w-full h-full flex items-center justify-center">
-          <Canvas
-            camera={{ position: [0, 1, 18], fov: 45 }}
-            dpr={[1, 1.5]}
-            gl={{ powerPreference: 'high-performance', antialias: true, alpha: true }}
-          >
-            <Suspense fallback={null}>
-              <OrbitScene
-                hoveredTech={hoveredTech}
-                setHoveredTech={setHoveredTech}
-              />
-            </Suspense>
-          </Canvas>
+          {introFinished && (
+            <Canvas
+              camera={{ position: [0, 1, 18], fov: 45 }}
+              dpr={[1, 1.5]}
+              gl={{ powerPreference: 'high-performance', antialias: true, alpha: true }}
+              frameloop={isInView ? 'always' : 'never'}
+            >
+              <Suspense fallback={null}>
+                <OrbitScene
+                  hoveredTech={hoveredTech}
+                  setHoveredTech={setHoveredTech}
+                />
+              </Suspense>
+            </Canvas>
+          )}
         </div>
       </div>
 
@@ -309,4 +336,4 @@ export default function PlanetOrbitSystem() {
 }
 
 // Preload planet GLTF asset
-useGLTF.preload('/planet/scene.gltf');
+useGLTF.preload('/planet/scene.glb', '/draco/');

@@ -27,7 +27,7 @@ const getGlowTexture = () => {
 
 // Subcomponent: Centered, steady and color-gradient galaxy points model
 function GalaxyModel({ isEntering }: { isEntering: boolean }) {
-  const { scene } = useGLTF('/scene.gltf');
+  const { scene } = useGLTF('/scene.glb', '/draco/');
   const groupRef = useRef<THREE.Group>(null);
   const materialRef = useRef<THREE.PointsMaterial | null>(null);
 
@@ -359,4 +359,4 @@ export default function GalaxyLoader({ onFinish }: GalaxyLoaderProps) {
 }
 
 // Preload the galaxy model assets
-useGLTF.preload('/scene.gltf');
+useGLTF.preload('/scene.glb', '/draco/');
