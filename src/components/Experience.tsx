@@ -75,7 +75,9 @@ export default function Experience({ theme = 'dark' }: ExperienceProps) {
           <span className="text-sm font-semibold tracking-widest text-[#00f0ff] uppercase">
             My Journey
           </span>
-          <h2 className="text-3xl md:text-5xl font-extrabold font-display text-white-forced">
+          <h2 className={`text-3xl md:text-5xl font-extrabold font-display ${
+            theme === 'light' ? 'text-slate-900' : 'text-white'
+          }`}>
             Work & Education
           </h2>
           <div className="h-1 w-20 bg-gradient-to-r from-[#00f0ff] to-[#bd00ff] rounded" />
