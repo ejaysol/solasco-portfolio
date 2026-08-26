@@ -1,24 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Mail } from 'lucide-react';
 import { gsap } from 'gsap';
-import { BlackHoleHeroSection } from '@/components/ui/blackhole-hero-section';
+
 
 interface HeroProps {
   theme: 'dark' | 'light';
   introFinished?: boolean;
 }
 
-function useNarrow(query = '(max-width: 767px)') {
-  const [narrow, setNarrow] = useState(false);
-  useEffect(() => {
-    const m = window.matchMedia(query);
-    const sync = () => setNarrow(m.matches);
-    sync();
-    m.addEventListener('change', sync);
-    return () => m.removeEventListener('change', sync);
-  }, [query]);
-  return narrow;
-}
+
 
 const ROLES = [
   'Front-end Developer',
@@ -26,13 +16,10 @@ const ROLES = [
   'Creative Technologist',
 ];
 
-export default function Hero({ theme, introFinished = false }: HeroProps) {
-  const narrow = useNarrow();
+export default function Hero({ theme }: HeroProps) {
   const isLight = theme === 'light';
-  const bgContainerRef = useRef<HTMLDivElement | null>(null);
   const avatarRef = useRef<HTMLDivElement | null>(null);
   const heroContentRef = useRef<HTMLDivElement | null>(null);
-  const [focus, setFocus] = useState<[number, number]>(narrow ? [0.5, 0.65] : [0.75, 0.42]);
 
   // Dynamic Typewriter State for Animated Hero Role
   const [roleIndex, setRoleIndex] = useState(0);
@@ -90,41 +77,7 @@ export default function Hero({ theme, introFinished = false }: HeroProps) {
     return () => ctx.revert();
   }, []);
 
-  // Dynamically compute geometric center of avatar within extended background canvas
-  useEffect(() => {
-    const updateFocus = () => {
-      if (!bgContainerRef.current || !avatarRef.current) return;
-      const bgRect = bgContainerRef.current.getBoundingClientRect();
-      const avatarRect = avatarRef.current.getBoundingClientRect();
 
-      if (bgRect.width > 0 && bgRect.height > 0) {
-        const centerX = (avatarRect.left + avatarRect.width / 2 - bgRect.left) / bgRect.width;
-        const centerY = (avatarRect.top + avatarRect.height / 2 - bgRect.top) / bgRect.height;
-        setFocus([
-          Math.max(0.01, Math.min(0.99, centerX)),
-          Math.max(0.01, Math.min(0.99, centerY)),
-        ]);
-      }
-    };
-
-    updateFocus();
-    const t1 = setTimeout(updateFocus, 50);
-    const t2 = setTimeout(updateFocus, 300);
-    window.addEventListener('resize', updateFocus);
-    window.addEventListener('scroll', updateFocus, { passive: true });
-
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      window.removeEventListener('resize', updateFocus);
-      window.removeEventListener('scroll', updateFocus);
-    };
-  }, [narrow]);
-
-  // Relativistic accretion disk colors tailored to theme
-  const hotColor = isLight ? '#0284c7' : '#FFF3DE';
-  const midColor = isLight ? '#0088cc' : '#00f0ff';
-  const coolColor = isLight ? '#8800cc' : '#bd00ff';
 
   const techBadges = [
     'React & Next.js',
@@ -143,28 +96,7 @@ export default function Hero({ theme, introFinished = false }: HeroProps) {
         Overlapping Black Hole Background Canvas 
         Extends past the hero into the next section (135% height) to create a continuous cosmic backdrop
       */}
-      <div
-        ref={bgContainerRef}
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-screen h-[135%] min-h-[900px] pointer-events-none -z-10 overflow-visible"
-      >
-        <BlackHoleHeroSection
-          focus={focus}
-          scrim="none"
-          vignette={0}
-          distance={24}
-          elevation={narrow ? -6 : -4.5}
-          fov={narrow ? 54 : 40}
-          glow={isLight ? 1.4 : (narrow ? 0.9 : 1.3)}
-          steps={narrow ? 110 : 280}
-          resolution={narrow ? 0.5 : 0.72}
-          maxDpr={narrow ? 1.15 : 1.5}
-          hotColor={hotColor}
-          midColor={midColor}
-          coolColor={coolColor}
-          paused={!introFinished}
-          className="w-full h-full"
-        />
-      </div>
+
 
       {/* Hero Content Grid */}
       <div
@@ -242,8 +174,8 @@ export default function Hero({ theme, introFinished = false }: HeroProps) {
             className={`hero-anim-item text-base sm:text-lg max-w-xl font-normal leading-relaxed transition-colors duration-300 ${isLight ? 'text-slate-700' : 'text-slate-300'
               }`}
           >
-            I craft immersive, high-performance web applications and intuitive digital experiences.
-            Blending cutting-edge 3D visuals with clean code architecture to bring creative ideas to life.
+            I craft responsive, high-performance web applications and intuitive user interfaces.
+            Blending creative UI/UX design with clean front-end code to bring seamless digital experiences to life.
           </p>
 
           {/* Tech Highlights Badges */}

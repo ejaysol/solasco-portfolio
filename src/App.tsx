@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// Component Imports
 import Navbar from './components/Navbar';
 import CustomCursor from './components/CustomCursor';
 import Hero from './components/Hero';
@@ -10,8 +9,8 @@ import About from './components/About';
 import Projects from './components/Projects';
 import Experience from './components/Experience';
 import Contact from './components/Contact';
-import SceneCanvas from './components/SceneCanvas';
-// import GalaxyLoader from './components/GalaxyLoader';
+import HorizonHeroBackground from './components/ui/horizon-hero-background';
+import GalaxyLoader from './components/GalaxyLoader';
 
 // Register GSAP ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
@@ -25,7 +24,7 @@ function App() {
     return 'dark';
   });
 
-  const [introFinished] = useState(true);
+  const [introFinished, setIntroFinished] = useState(false);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -87,17 +86,15 @@ function App() {
       {/* Interactive Cursor overlay - globally rendered so it's visible in both loading intro and portfolio */}
       <CustomCursor />
 
-      {/* {!introFinished && (
+      {!introFinished && (
         <GalaxyLoader onFinish={() => setIntroFinished(true)} />
-      )} */}
+      )}
 
       <div className={`transition-opacity duration-1000 ${introFinished ? 'opacity-100' : 'opacity-0 h-screen overflow-hidden pointer-events-none'
         }`}>
         <div className="relative min-h-screen overflow-hidden font-sans isolate">
           {/* Global Background 3D Particles */}
-          <div className="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none">
-            {introFinished && <SceneCanvas type="bg" theme={theme} />}
-          </div>
+            {introFinished && <HorizonHeroBackground theme={theme} />}
 
           {/* Navigation */}
           <Navbar theme={theme} toggleTheme={toggleTheme} />
@@ -107,7 +104,7 @@ function App() {
             <Hero theme={theme} introFinished={introFinished} />
             <About theme={theme} introFinished={introFinished} />
             <Projects theme={theme} />
-            <Experience />
+            <Experience theme={theme} />
             <Contact />
           </main>
 

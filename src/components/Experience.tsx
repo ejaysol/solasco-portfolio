@@ -1,6 +1,10 @@
 import { GraduationCap, Cloud, Server, Brain, MonitorPlay, Compass, Cpu } from 'lucide-react';
 
-export default function Experience() {
+interface ExperienceProps {
+  theme?: 'dark' | 'light';
+}
+
+export default function Experience({ theme = 'dark' }: ExperienceProps) {
   const history = [
     {
       role: 'Bachelor of Science in Information Technology',
@@ -71,25 +75,33 @@ export default function Experience() {
           <span className="text-sm font-semibold tracking-widest text-[#00f0ff] uppercase">
             My Journey
           </span>
-          <h2 className="text-3xl md:text-5xl font-extrabold font-display text-white">
+          <h2 className={`text-3xl md:text-5xl font-extrabold font-display ${
+            theme === 'light' ? 'text-slate-900' : 'text-white'
+          }`}>
             Work & Education
           </h2>
           <div className="h-1 w-20 bg-gradient-to-r from-[#00f0ff] to-[#bd00ff] rounded" />
         </div>
 
         {/* Timeline */}
-        <div className="relative border-l border-white/10 ml-4 md:ml-8 space-y-12 text-left">
+        <div className={`relative border-l ml-4 md:ml-8 space-y-12 text-left ${
+          theme === 'light' ? 'border-slate-300' : 'border-white/10'
+        }`}>
           {history.map((item, idx) => (
             <div key={idx} className="relative pl-8 group">
               {/* Timeline dot/icon */}
-              <div className="absolute -left-[21px] top-0 bg-[#0a0a0f] p-2 rounded-full border border-white/10 group-hover:border-[#00f0ff] transition-colors duration-300 shadow-md">
+              <div className={`absolute -left-[21px] top-0 p-2 rounded-full border group-hover:border-[#00f0ff] transition-colors duration-300 shadow-md ${
+                theme === 'light' ? 'bg-slate-100 border-slate-300' : 'bg-[#0a0a0f] border-white/10'
+              }`}>
                 {item.icon}
               </div>
 
               {/* Card content */}
               <div className="glass p-6 rounded-2xl border border-white/5 hover:border-[#00f0ff]/30 transition-all duration-300 relative group-hover:scale-[1.01]">
                 {/* Connector line (subtle) */}
-                <div className="absolute top-6 -left-4 w-4 h-px bg-white/10 group-hover:bg-[#00f0ff] transition-colors duration-300" />
+                <div className={`absolute top-6 -left-4 w-4 h-px group-hover:bg-[#00f0ff] transition-colors duration-300 ${
+                  theme === 'light' ? 'bg-slate-300' : 'bg-white/10'
+                }`} />
                 
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-4">
                   <div>

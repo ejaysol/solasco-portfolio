@@ -58,7 +58,7 @@ export default function About({ theme = 'dark', introFinished = false }: AboutPr
           </div>
 
           {/* Right Column: Bio Text */}
-          <div className="lg:col-span-7 space-y-6 w-full text-left text-slate-300 leading-relaxed font-normal text-sm">
+          <div className="lg:col-span-7 space-y-6 w-full text-left text-slate-300 leading-relaxed font-normal text-sm glass p-6 md:p-8 rounded-2xl shadow-xl">
             <p>
               As a UI/UX designer, I focus on creating intuitive interfaces that prioritize user experience while maintaining aesthetic appeal. My approach combines user research, wireframing, prototyping, and iterative testing to ensure every design decision serves a purpose. I specialize in responsive design, accessibility standards, and creating seamless user journeys across different devices and platforms.
             </p>

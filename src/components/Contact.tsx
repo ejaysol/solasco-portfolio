@@ -53,7 +53,7 @@ export default function Contact() {
     };
 
     emailjs
-      .send(serviceID, templateID, templateParams, publicKey)
+      .send(serviceID, templateID, templateParams, { publicKey })
       .then(
         () => {
           celebrateSuccess();
@@ -77,7 +77,7 @@ export default function Contact() {
           <span className="text-sm font-semibold tracking-widest text-[#00f0ff] uppercase">
             Get In Touch
           </span>
-          <h2 className="text-3xl md:text-5xl font-extrabold font-display text-white">
+          <h2 className="text-3xl md:text-5xl font-extrabold font-display text-white-forced">
             Let's Collaborate
           </h2>
           <div className="h-1 w-20 bg-gradient-to-r from-[#00f0ff] to-[#bd00ff] rounded" />
@@ -89,7 +89,7 @@ export default function Contact() {
           {/* Left Info Column */}
           <div className="lg:col-span-5 flex flex-col justify-between text-left space-y-8">
             <div className="space-y-6">
-              <h3 className="text-2xl font-bold text-white font-display">
+              <h3 className="text-2xl font-bold text-white-forced font-display">
                 Have a project in mind?
               </h3>
               <p className="text-slate-400 leading-relaxed font-normal">
