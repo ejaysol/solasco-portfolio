@@ -388,7 +388,11 @@ export default function HorizonHeroBackground({ theme = 'dark' }: { theme?: 'dar
     initThree();
 
     // Handle resize
+    let lastWidth = window.innerWidth;
     const handleResize = () => {
+      if (window.innerWidth === lastWidth) return;
+      lastWidth = window.innerWidth;
+
       if (refs.camera && refs.renderer && refs.composer) {
         refs.camera.aspect = window.innerWidth / window.innerHeight;
         refs.camera.updateProjectionMatrix();
@@ -443,11 +447,24 @@ export default function HorizonHeroBackground({ theme = 'dark' }: { theme?: 'dar
 
   // Scroll handling
   useEffect(() => {
+    let lastWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
+    let documentHeight = document.documentElement.scrollHeight;
+    let maxScroll = documentHeight - windowHeight;
+
+    const handleResize = () => {
+      if (window.innerWidth === lastWidth) return;
+      lastWidth = window.innerWidth;
+
+      windowHeight = window.innerHeight;
+      documentHeight = document.documentElement.scrollHeight;
+      maxScroll = documentHeight - windowHeight;
+    };
+
+    window.addEventListener('resize', handleResize);
+
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      const maxScroll = documentHeight - windowHeight;
       const progress = maxScroll > 0 ? Math.min(scrollY / maxScroll, 1) : 0;
 
       const totalSections = 2;
@@ -500,7 +517,10 @@ export default function HorizonHeroBackground({ theme = 'dark' }: { theme?: 'dar
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Set initial position
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   // Dynamically react to theme changes
